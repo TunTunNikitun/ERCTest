@@ -29,7 +29,7 @@ namespace ERCTestApi.Controllers
 
         // POST: LsController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [Route("CreateAccount")]
         public void CreatePersonalAccount(string name, string surname, string? patronymic, string city, string street, 
             int building, int? housing, int? flat, double square, int residentsNumber)
         {
@@ -61,6 +61,7 @@ namespace ERCTestApi.Controllers
             }
         }
         [HttpGet]
+        [Route("GetAccount")]
         public string GetPersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
@@ -71,8 +72,10 @@ namespace ERCTestApi.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("Close Account")]
+
+
+        [HttpPost]
+        [Route("CloseAccount")]
         public  void ClosePersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
@@ -81,6 +84,25 @@ namespace ERCTestApi.Controllers
                 account.CloseDate = DateTime.Now;
                 db.SaveChanges();
             }
+        }
+
+        [HttpGet]
+        [Route("GetAllAccounts")]
+        public string GetAllAccounts()
+        {
+            using(ApplicationContext db = new ApplicationContext())
+            {
+                var accounts= db.PersonalAccounts.Include(a=>a.Address).Include(a=>a.Client).ToList();
+                var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("Change Account")]
+        public void ChangeAccount()
+        {
+
         }
 
         //// GET: LsController/Edit/5
