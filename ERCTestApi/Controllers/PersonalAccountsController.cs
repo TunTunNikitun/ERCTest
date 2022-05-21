@@ -30,53 +30,84 @@ namespace ERCTestApi.Controllers
         // POST: LsController/Create
         [HttpPost]
         [Route("CreateAccount")]
-        public void CreatePersonalAccount(string name, string surname, string? patronymic, string city, string street, 
-            int building, int? housing, int? flat, double square, int residentsNumber)
+        public async void CreatePersonalAccount(string personalAccountJson)
         {
-            PersonalAccounts PersonalAccount = new PersonalAccounts();
-            Person client = new Person
-            {
-                Name = name,
-                Surname = surname,
-                Patronymic = patronymic
-            };
-            Address address = new Address
-            {
-                Street = street,
-                City = city,
-                Building = building,
-                Housing = housing,
-                Flat = flat
-            };
-            PersonalAccount.Client = client;
-            PersonalAccount.Address = address;
-            PersonalAccount.Square = square;
-            PersonalAccount.ResidentsNumber = residentsNumber;
-            PersonalAccount.OpenDate = DateTime.Now;
+            PersonalAccounts PersonalAccount = Serialization.JsonDeserializing<PersonalAccounts>(personalAccountJson);
+            //PersonalAccounts PersonalAccount = await personalAccountJson.ReadFromJsonAsync<PersonalAccounts>();
 
-            using(ApplicationContext db= new ApplicationContext())
+
+
+
+
+            using (ApplicationContext db = new ApplicationContext())
             {
                 db.PersonalAccounts.Add(PersonalAccount);
                 db.SaveChanges();
             }
         }
+        //public void CreatePersonalAccount(string name, string surname, string? patronymic, string city, string street, 
+        //    int building, int? housing, int? flat, double square, int residentsNumber)
+        //{
+        //    PersonalAccounts PersonalAccount = new PersonalAccounts();
+        //    Person client = new Person
+        //    {
+        //        Name = name,
+        //        Surname = surname,
+        //        Patronymic = patronymic
+        //    };
+        //    Address address = new Address
+        //    {
+        //        Street = street,
+        //        City = city,
+        //        Building = building,
+        //        Housing = housing,
+        //        Flat = flat
+        //    };
+        //    PersonalAccount.Client = client;
+        //    PersonalAccount.Address = address;
+        //    PersonalAccount.Square = square;
+        //    PersonalAccount.ResidentsNumber = residentsNumber;
+        //    PersonalAccount.OpenDate = DateTime.Now;
+
+        //    using(ApplicationContext db= new ApplicationContext())
+        //    {
+        //        db.PersonalAccounts.Add(PersonalAccount);
+        //        db.SaveChanges();
+        //    }
+        //}
         [HttpGet]
         [Route("GetAccount")]
-        public string GetPersonalAccount(int id)
+        public string GetPersonalAccount(int? id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var account = (db.PersonalAccounts.Include(a => a.Client).Include(a => a.Address).ToList()).Where(a => a.Id == id).FirstOrDefault();
-                var accountJson = Serialization.Getjson<PersonalAccounts>(account);
-                return accountJson;
+                if (id != null)
+                {
+                    if (id > 0)
+                    {
+                        var account = (db.PersonalAccounts.Include(a => a.Client).Include(a => a.Address).ToList()).Where(a => a.Id == id).FirstOrDefault();
+                        var accountJson = Serialization.Getjson<PersonalAccounts>(account);
+                        return accountJson;
+                    }
+                    else
+                        return "Wrong id";
+                }
+                else
+                {
+
+                    var accounts = db.PersonalAccounts.Include(a => a.Address).Include(a => a.Client).ToList();
+                    var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
+                    return result;
+
+                }
             }
         }
 
 
 
-        [HttpPost]
+        [HttpDelete]
         [Route("CloseAccount")]
-        public  void ClosePersonalAccount(int id)
+        public void ClosePersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -86,19 +117,19 @@ namespace ERCTestApi.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("GetAllAccounts")]
-        public string GetAllAccounts()
-        {
-            using(ApplicationContext db = new ApplicationContext())
-            {
-                var accounts= db.PersonalAccounts.Include(a=>a.Address).Include(a=>a.Client).ToList();
-                var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
-                return result;
-            }
-        }
+        //[HttpGet]
+        //[Route("GetAllAccounts")]
+        //public string GetAllAccounts()
+        //{
+        //    using(ApplicationContext db = new ApplicationContext())
+        //    {
+        //        var accounts= db.PersonalAccounts.Include(a=>a.Address).Include(a=>a.Client).ToList();
+        //        var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
+        //        return result;
+        //    }
+        //}
 
-        [HttpPost]
+        [HttpPut]
         [Route("Change Account")]
         public void ChangeAccount()
         {

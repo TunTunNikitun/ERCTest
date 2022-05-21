@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-namespace ERCTestApi
+namespace ERCTest
 {
     public class Serialization
     {

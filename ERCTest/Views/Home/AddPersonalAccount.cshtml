@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model PersonalAccounts
+@{
+    Layout = "_Layout"; ViewBag.Title = "Добавление лицевого счета";
+}
+<h2>Добавление лицевого счета<a asp-action="Index" class="btn btn-sm btn-secondary">Назад к списку</a></h2>
+<form asp-action="AddPersonalAccount" method="post">
+    <div class="form-group">
+        <label for="Name">Фамилия:</label>
+        <input class="form-control" name="surname" />
+         <label for="Name">Имя:</label>
+        <input class="form-control" name="name" />
+         <label for="Name">Отчество:</label>
+        <input class="form-control" name="patronymic" />
+    </div>
+    <div class="form-group">
+        <label for="StartLocation">Город:</label>
+        <input class="form-control" name="city" />
+         <label for="StartLocation">Улица:</label>
+        <input class="form-control" name="street" />
+        <label for="StartLocation">Дом:</label>
+        <input class="form-control" name="building" />
+        <label for="StartLocation">Корпус:</label>
+        <input class="form-control" name="housing" />
+        <label for="StartLocation">Квартира:</label>
+        <input class="form-control" name="flat" />
+    </div>
+    <div class="form-group">
+        <label for="EndLocation">Площадь помещения:</label>
+        <input class="form-control" name="square" />
+        <label for="EndLocation">Кол-во проживающих:</label>
+        <input class="form-control" name="residentsNumber" />
+    </div>
+    <div class="text-center panel-body">
+        <button type="submit" class="btn btn-sm btn-primary">Add</button>
+    </div>
+</form>
+ 
+@*@if (Model != null)
+{
+    <h2>Reservation</h2>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Start Location</th>
+                <th>End Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.Name</td>
+                <td>@Model.StartLocation</td>
+                <td>@Model.EndLocation</td>
+            </tr>
+        </tbody>
+    </table>
+}*@
