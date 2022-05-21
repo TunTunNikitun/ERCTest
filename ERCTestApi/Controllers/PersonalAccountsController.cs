@@ -9,72 +9,19 @@ namespace ERCTestApi.Controllers
     [Route("[controller]")]
     public class PersonalAccountsController : ControllerBase
     {
-        //// GET: LsController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        //// GET: LsController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        //// GET: LsController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        // POST: LsController/Create
         [HttpPost]
         [Route("CreateAccount")]
         public async void CreatePersonalAccount(string personalAccountJson)
         {
             PersonalAccounts PersonalAccount = Serialization.JsonDeserializing<PersonalAccounts>(personalAccountJson);
-            //PersonalAccounts PersonalAccount = await personalAccountJson.ReadFromJsonAsync<PersonalAccounts>();
-
-
-
-
-
+            PersonalAccount.OpenDate = DateTime.Now;
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.PersonalAccounts.Add(PersonalAccount);
                 db.SaveChanges();
             }
         }
-        //public void CreatePersonalAccount(string name, string surname, string? patronymic, string city, string street, 
-        //    int building, int? housing, int? flat, double square, int residentsNumber)
-        //{
-        //    PersonalAccounts PersonalAccount = new PersonalAccounts();
-        //    Person client = new Person
-        //    {
-        //        Name = name,
-        //        Surname = surname,
-        //        Patronymic = patronymic
-        //    };
-        //    Address address = new Address
-        //    {
-        //        Street = street,
-        //        City = city,
-        //        Building = building,
-        //        Housing = housing,
-        //        Flat = flat
-        //    };
-        //    PersonalAccount.Client = client;
-        //    PersonalAccount.Address = address;
-        //    PersonalAccount.Square = square;
-        //    PersonalAccount.ResidentsNumber = residentsNumber;
-        //    PersonalAccount.OpenDate = DateTime.Now;
-
-        //    using(ApplicationContext db= new ApplicationContext())
-        //    {
-        //        db.PersonalAccounts.Add(PersonalAccount);
-        //        db.SaveChanges();
-        //    }
-        //}
+        
         [HttpGet]
         [Route("GetAccount")]
         public string GetPersonalAccount(int? id)
