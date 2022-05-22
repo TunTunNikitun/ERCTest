@@ -52,8 +52,8 @@ namespace ERCTestApi.Controllers
 
 
 
-        [HttpDelete]
-        [Route("CloseAccount")]
+        [HttpDelete("{id:int}")]
+        //[Route("CloseAccount")]
         public void ClosePersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())

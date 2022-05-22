@@ -59,15 +59,12 @@ namespace ERCTest.Controllers
             {
                 var response = await httpClient.PostAsync(
                     $"https://localhost:7274/PersonalAccounts/CreateAccount?personalAccountJson={personalAccountJson}", content);
-
-                
             }
             return View(PersonalAccount);
         }
 
         public async Task<IActionResult> PersonalAccountDetails(int Id )
         {
-
             PersonalAccounts account = new PersonalAccounts();
             using(var httpClient = new HttpClient())
             {
@@ -80,16 +77,16 @@ namespace ERCTest.Controllers
             return View(account);
         }
 
-        public async Task<IActionResult> ClosePersonalAccount(int Id)
+        public async Task<IActionResult> ClosePersonalAccount(int id)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"https://localhost:7274/PersonalAccounts/GetAccount?id={Id}"))
+                using (var response = await httpClient.DeleteAsync($"https://localhost:7274/PersonalAccounts/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }
             }
-            return RedirectToAction("PersonalAccountDetails", Id);
+            return RedirectToAction("PersonalAccountDetails", new { Id = id });
         }
     }
 }
