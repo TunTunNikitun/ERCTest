@@ -4,6 +4,7 @@
 }
 <h2>Все лицевые счета</h2>
 <a asp-action="AddPersonalAccount" class="btn btn-sm btn-primary">Добавить Лицевой счет</a>
+
 <table class="table table-sm table-striped table-bordered m-2">
     <thead>
         <tr>
@@ -16,14 +17,14 @@
     </thead>
     <tbody>
         @foreach( var account in Model)
-        {
+        {            
             <tr>
                 <td>@account.Id</td>
                 <td>@account.Client.ToString()</td>
                 <td>@account.Address.ToString()</td>
                 <td>@account.OpenDate</td>
                 <td>@account.CloseDate</td>
-                <td><a asp-action="PersonalAccountDetails" class="btn btn-sm btn-secondary">Подробнее</a></td>
+                <td><input type="button" class=" but_error" value="Подробнее" onclick="location.href='@Url.Action("PersonalAccountDetails",  new {Id=account.Id})'" /></td>
             </tr>
         }
     </tbody>

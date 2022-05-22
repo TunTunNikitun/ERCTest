@@ -34,5 +34,5 @@
     </tbody>
     </table>
     <a asp-action="Index" class="btn btn-sm btn-secondary">Назад к списку</a>
-    <a asp-action="Index" class="btn btn-sm btn-secondary">Назад к списку</a>
+   <td><input type="button" class=" but_error" value="Закрыть счет" onclick="location.href='@Url.Action("ClosePersonalAccount",  new {Id=Model.Id})'" /></td>
 }

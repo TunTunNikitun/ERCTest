@@ -65,9 +65,31 @@ namespace ERCTest.Controllers
             return View(PersonalAccount);
         }
 
-        public async Task<IActionResult> PersonalAccountDetails(int Id)
+        public async Task<IActionResult> PersonalAccountDetails(int Id )
         {
 
+            PersonalAccounts account = new PersonalAccounts();
+            using(var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"https://localhost:7274/PersonalAccounts/GetAccount?id={Id}"))
+                {
+                    string apiResponse= await response.Content.ReadAsStringAsync();
+                    account= JsonConvert.DeserializeObject<PersonalAccounts>(apiResponse);
+                }
+            }
+            return View(account);
+        }
+
+        public async Task<IActionResult> ClosePersonalAccount(int Id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"https://localhost:7274/PersonalAccounts/GetAccount?id={Id}"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("PersonalAccountDetails", Id);
         }
     }
 }
