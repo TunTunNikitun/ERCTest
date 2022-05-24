@@ -6,35 +6,35 @@
     Layout = "_Layout"; ViewBag.Title = "Добавление лицевого счета";
 }
 <h2>Добавление лицевого счета<a asp-action="Index" class="btn btn-sm btn-secondary">Назад к списку</a></h2>
-<form asp-action="AddPersonalAccount" method="post">
+<form asp-action="AddPersonalAccount" asp-asp-controller"Home" method="post">
     <div class="form-group">
         <label for="Name">Фамилия:</label>
-        <input class="form-control" name="surname" />
+        <input class="form-control" asp-for="@Model.Client.Surname" />
          <label for="Name">Имя:</label>
-        <input class="form-control" name="name" />
+        <input class="form-control" asp-for="@Model.Client.Name" />
          <label for="Name">Отчество:</label>
-        <input class="form-control" name="patronymic" />
+        <input class="form-control" asp-for="@Model.Client.Patronymic" />
     </div>
     <div class="form-group">
         <label for="StartLocation">Город:</label>
-        <input class="form-control" name="city" />
+        <input class="form-control" asp-for="@Model.Address.City" />
          <label for="StartLocation">Улица:</label>
-        <input class="form-control" name="street" />
+        <input class="form-control" asp-for="@Model.Address.Street" />
         <label for="StartLocation">Дом:</label>
-        <input class="form-control" name="building" />
+        <input class="form-control" asp-for="@Model.Address.Building" />
         <label for="StartLocation">Корпус:</label>
-        <input class="form-control" name="housing" />
+        <input class="form-control" asp-for="@Model.Address.Housing" />
         <label for="StartLocation">Квартира:</label>
-        <input class="form-control" name="flat" />
+        <input class="form-control" asp-for="@Model.Address.Flat" />
     </div>
     <div class="form-group">
         <label for="EndLocation">Площадь помещения:</label>
-        <input class="form-control" name="square" />
+        <input class="form-control" asp-for="@Model.Square" />
         <label for="EndLocation">Кол-во проживающих:</label>
-        <input class="form-control" name="residentsNumber" />
+        <input class="form-control" asp-for="@Model.ResidentsNumber" />
     </div>
     <div class="text-center panel-body">
-        <button type="submit" class="btn btn-sm btn-primary">Add</button>
+        <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
     </div>
 </form>
  
@@ -44,7 +44,6 @@
     <table class="table table-sm table-striped table-bordered m-2">
         <thead>
         <tr>
-        <th>ИД</th>
         <th>ФИО</th>
         <th>Адрес</th>
         <th>Дата открытия</th>
@@ -53,7 +52,6 @@
     </thead>
     <tbody>
             <tr>
-                <td>@Model.Id</td>
                 <td>@Model.Client.ToString()</td>
                 <td>@Model.Address.ToString()</td>
                 <td>@System.DateTime.Now </td>

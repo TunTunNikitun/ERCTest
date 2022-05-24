@@ -28,39 +28,18 @@ namespace ERCTest.Controllers
         public ViewResult AddPersonalAccount() => View();
 
         [HttpPost]
-        public async Task<IActionResult> AddPersonalAccount(string name, string surname, string? patronymic, string city, string street,
-            int building, int? housing, int? flat, double square, int residentsNumber)
+        //public async Task<IActionResult> AddPersonalAccount(string name, string surname, string? patronymic, string city, string street,
+        //    int building, int? housing, int? flat, double square, int residentsNumber)
+        public async Task<IActionResult> AddPersonalAccount(PersonalAccounts PersonalAccount)
         {
-            PersonalAccounts PersonalAccount = new PersonalAccounts();
-            Person client = new Person
-            {
-                Name = name,
-                Surname = surname,
-                Patronymic = patronymic
-            };
-            Address address = new Address
-            {
-                Street = street,
-                City = city,
-                Building = building,
-                Housing = housing,
-                Flat = flat
-            };
-            PersonalAccount.Client = client;
-            PersonalAccount.Address = address;
-            PersonalAccount.Square = square;
-            PersonalAccount.ResidentsNumber = residentsNumber;
-
             string personalAccountJson = Serialization.Getjson<PersonalAccounts>(PersonalAccount);
             HttpContent content = new StringContent(personalAccountJson, Encoding.UTF8, "application/json");
-
-
             using (var httpClient = new HttpClient())
             {
                 var response = await httpClient.PostAsync(
                     $"https://localhost:7274/PersonalAccounts/CreateAccount?personalAccountJson={personalAccountJson}", content);
             }
-            return View(PersonalAccount);
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> PersonalAccountDetails(int Id )
@@ -88,14 +67,6 @@ namespace ERCTest.Controllers
             }
             return RedirectToAction("PersonalAccountDetails", new { Id = id });
         }
-        
-        //private async Task<IActionResult> AccountChanging(int id, string name, string surname, string? patronymic, string city, string street,
-        //    int building, int? housing, int? flat, double square, int residentsNumber)
-        //{
-        //    if (name == null)
-        //        GetAccountDataToChange(id);
-        //    else
-        //}
 
         private async Task<IActionResult> GetAccountDataToChange(int id)
         {
@@ -110,7 +81,6 @@ namespace ERCTest.Controllers
             }
             return View(account);
         }
-        //public async Task<IActionResult> AccountChanging(int id)
         public async Task<IActionResult> AccountChanging(int id)
         {
             PersonalAccounts account = new PersonalAccounts();
@@ -123,7 +93,6 @@ namespace ERCTest.Controllers
                 }
             }
             ViewBag.Data = account;
-            //return View(account);
             return View();
         }
         public async Task<IActionResult> SaveAccountChanging(PersonalAccounts account)
@@ -135,41 +104,9 @@ namespace ERCTest.Controllers
                 using (var response = await httpClient.PutAsync($"https://localhost:7274/PersonalAccounts/ChangeAccount?newAccountJson={accountJson}", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    //account = JsonConvert.DeserializeObject<PersonalAccounts>(apiResponse);
                 }
             }
             return RedirectToAction("PersonalAccountDetails", new { Id = account.Id });
         }
-        //public async Task<IActionResult> AccountChanging(int id, string name, string surname, string? patronymic, string city, string street,
-        //    int building, int? housing, int? flat, double square, int residentsNumber)
-        public async Task<IActionResult> ViewTest(int id)
-        {
-            return await GetAccountDataToChange(id);
-        }
-
-        //public async Task<IActionResult> AccountChanging(int id, string response)
-        //public async Task<IActionResult> AccountChanging(int id, string name, string surname, string? patronymic, string city, string street,
-        //    int building, int? housing, int? flat, double square, int residentsNumber)
-        //public async Task<IActionResult> AccountChanging(int id, PersonalAccounts accounts)
-        //{
-        //    var account = new PersonalAccounts();
-        //    //if (account.Client == null)
-        //    return await GetAccountDataToChange(id);
-        //    //else
-        //    //{
-        //    //    //var account = new PersonalAccounts(name, surname, patronymic, city, street, building, housing, flat, square, residentsNumber);
-        //    //    var accountJson = Serialization.Getjson(account);
-        //    //    using (var httpClient = new HttpClient())
-        //    //    {
-        //    //        HttpContent content = new StringContent(accountJson, Encoding.UTF8, "application/json");
-        //    //        using (var response = await httpClient.PutAsync($"https://localhost:7274/PersonalAccounts/ChangeAccount?id={id}&newAccountJson={accountJson}", content))
-        //    //        {
-        //    //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //    //            //account = JsonConvert.DeserializeObject<PersonalAccounts>(apiResponse);
-        //    //        }
-        //    //    }
-        //    //return RedirectToAction("PersonalAccountDetails", new { Id = id });
-        //    //}
-        //}
     }
 }

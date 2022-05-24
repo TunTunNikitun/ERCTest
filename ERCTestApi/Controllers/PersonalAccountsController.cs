@@ -48,23 +48,18 @@ namespace ERCTestApi.Controllers
             }
         }
 
-
-
-        //[HttpDelete("{id:int}")]
         [HttpDelete]
         [Route("CloseAccount")]
         public void ClosePersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                //var account = (db.PersonalAccounts.ToList()).Where(a => a.Id == id).FirstOrDefault();
                 var account = db.PersonalAccounts.Where(a => a.Id == id).FirstOrDefault();
                 if (account.CloseDate == null)
                 {
                     account.CloseDate = DateTime.Now;
                     db.SaveChanges();
                 }
-
             }
         }
 
@@ -75,9 +70,7 @@ namespace ERCTestApi.Controllers
             using(ApplicationContext db = new ApplicationContext())
             {
                 var newAccount = Serialization.JsonDeserializing<PersonalAccounts>(newAccountJson);
-                var account = db.PersonalAccounts.Where(a => a.Id == newAccount.Id).Include(a=>a.Client).Include(a=>a.Address).FirstOrDefault();
-                //var newAccount = new PersonalAccounts(name, surname, patronymic, city, street, building, housing, flat, square, residentsNumber);
-               
+                var account = db.PersonalAccounts.Where(a => a.Id == newAccount.Id).Include(a=>a.Client).Include(a=>a.Address).FirstOrDefault();               
                 account.Client.Name = newAccount.Client.Name;
                 account.Client.Surname = newAccount.Client.Surname;
                 account.Client.Patronymic = newAccount.Client.Patronymic;

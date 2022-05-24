@@ -25,18 +25,18 @@ namespace ERCTestApi
         {
             var address = new Address
                 {
-                    City = "Ekat",
+                    City = "Екатеринбург",
                     Building = 1,
-                    Street = "Mosk",
+                    Street = "Пушкина",
                     Flat = 10,
                     Id = 1
                 };
             var client = new Person
             {
                 Id = 1,
-                Name = "Nik",
-                Surname = "Koz",
-                Patronymic ="as"
+                Name = "Никита",
+                Surname = "Козырев",
+                Patronymic ="Викторович"
             };
             PersonalAccounts acc = new PersonalAccounts
             {
