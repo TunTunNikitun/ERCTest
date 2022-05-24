@@ -41,88 +41,56 @@ namespace ERCTestApi.Controllers
                 }
                 else
                 {
-
                     var accounts = db.PersonalAccounts.Include(a => a.Address).Include(a => a.Client).ToList();
                     var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
                     return result;
-
                 }
             }
         }
 
 
 
-        [HttpDelete("{id:int}")]
-        //[Route("CloseAccount")]
+        //[HttpDelete("{id:int}")]
+        [HttpDelete]
+        [Route("CloseAccount")]
         public void ClosePersonalAccount(int id)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var account = (db.PersonalAccounts.ToList()).Where(a => a.Id == id).FirstOrDefault();
-                account.CloseDate = DateTime.Now;
-                db.SaveChanges();
+                //var account = (db.PersonalAccounts.ToList()).Where(a => a.Id == id).FirstOrDefault();
+                var account = db.PersonalAccounts.Where(a => a.Id == id).FirstOrDefault();
+                if (account.CloseDate == null)
+                {
+                    account.CloseDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+
             }
         }
 
-        //[HttpGet]
-        //[Route("GetAllAccounts")]
-        //public string GetAllAccounts()
-        //{
-        //    using(ApplicationContext db = new ApplicationContext())
-        //    {
-        //        var accounts= db.PersonalAccounts.Include(a=>a.Address).Include(a=>a.Client).ToList();
-        //        var result = Serialization.Getjson<List<PersonalAccounts>>(accounts);
-        //        return result;
-        //    }
-        //}
-
         [HttpPut]
-        [Route("Change Account")]
-        public void ChangeAccount()
+        [Route("ChangeAccount")]
+        public void ChangeAccount(string newAccountJson)
         {
-
-        }
-
-        //// GET: LsController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: LsController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: LsController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: LsController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            using(ApplicationContext db = new ApplicationContext())
+            {
+                var newAccount = Serialization.JsonDeserializing<PersonalAccounts>(newAccountJson);
+                var account = db.PersonalAccounts.Where(a => a.Id == newAccount.Id).Include(a=>a.Client).Include(a=>a.Address).FirstOrDefault();
+                //var newAccount = new PersonalAccounts(name, surname, patronymic, city, street, building, housing, flat, square, residentsNumber);
+               
+                account.Client.Name = newAccount.Client.Name;
+                account.Client.Surname = newAccount.Client.Surname;
+                account.Client.Patronymic = newAccount.Client.Patronymic;
+                account.Address.City = newAccount.Address.City;
+                account.Address.Street = newAccount.Address.Street;
+                account.Address.Building = newAccount.Address.Building;
+                account.Address.Housing = newAccount.Address.Housing;
+                account.Address.Flat = newAccount.Address.Flat;
+                account.Square = newAccount.Square;
+                account.ResidentsNumber = newAccount.ResidentsNumber;
+                db.PersonalAccounts.Update(account);
+                db.SaveChanges();
+            }
+        } 
     }
 }

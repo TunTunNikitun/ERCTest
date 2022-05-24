@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model PersonalAccounts
+
+@{
+    Layout = "_Layout"; ViewBag.Title = "Изменение лицевого счета";
+}
+<h2>Добавление лицевого счета<a asp-action="Index" class="btn btn-sm btn-secondary">Назад к списку</a></h2>
+<form asp-action="SaveAccountChanging"  asp-asp-controller"Home" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="@Model.Id" value=@ViewBag.Data.Id/>
+
+
+        <label for="Name">Фамилия:</label>
+        <input class="form-control" asp-for="@Model.Client.Surname"  value=@ViewBag.Data.Client.Surname />
+         <label for="Name">Имя:</label>
+        <input class="form-control" asp-for="@Model.Client.Name"  value=@ViewBag.Data.Client.Name />
+         <label for="Name">Отчество:</label>
+        <input class="form-control" asp-for="@Model.Client.Patronymic"  value=@ViewBag.Data.Client.Patronymic />
+    </div>
+    <div class="form-group">
+        <label for="StartLocation">Город:</label>
+        <input class="form-control" asp-for="@Model.Address.City"  value=@ViewBag.Data.Address.City />
+         <label for="StartLocation">Улица:</label>
+        <input class="form-control" asp-for="@Model.Address.Street"  value=@ViewBag.Data.Address.Street />
+        <label for="StartLocation">Дом:</label>
+        <input class="form-control" asp-for="@Model.Address.Building"  value=@ViewBag.Data.Address.Building />
+        <label for="StartLocation">Корпус:</label>
+        <input class="form-control" asp-for="@Model.Address.Housing" value=@ViewBag.Data.Address.Housing />
+        <label for="StartLocation">Квартира:</label>
+        <input class="form-control" asp-for="@Model.Address.Flat"  value=@ViewBag.Data.Address.Flat />
+        
+    </div>
+    <div class="form-group">
+        <label for="EndLocation">Площадь помещения:</label>
+        <input class="form-control" asp-for="@Model.Square" value=@ViewBag.Data.Square />
+        <label for="EndLocation">Кол-во проживающих:</label>
+        <input class="form-control" asp-for="@Model.ResidentsNumber"  value=@ViewBag.Data.ResidentsNumber />
+
+       
+
+    </div>
+    <div class="text-center panel-body">
+        @*<button type="button" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("AccountChanging",  new {account=Model})'">Add</button>*@
+        @*<button type="button" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("AccountChanging",  new {id=Model.Id})'">Add</button>*@
+        <input type="submit" value="Save" class="btn btn-primary" />
+        @*<button type="submit" class="btn btn-sm btn-primary">Add</button>*@
+    </div>
+</form>
